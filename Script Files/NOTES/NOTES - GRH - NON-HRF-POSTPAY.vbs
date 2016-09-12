@@ -157,7 +157,7 @@ FUNCTION MAXIS_dialog_navigation2
 	'Goes to MONY VNDS screen using the most active faci vnd number on case... If EMReadScreen does not read any FACI pnls. MsgBox there are no faci pnls.
 	If ButtonPressed = VNDS_button then
 		If faci_pnls = "0" then
-			MsgBox "There Are No Faci pnls"
+			MsgBox "There Are No Facility panels"
 		Else
 			call navigate_to_MAXIS_screen("MONY", "VNDS")
 			EMWriteScreen faci_vndnumber, 04, 59
@@ -418,8 +418,8 @@ Call navigate_to_MAXIS_screen ("STAT", "UNEA")
 EMReadScreen unea_pnls, 1, 2, 78		'counts how many active unea pnls
 Dim unea_list()					'Dims variable to make an array list of existing UNEA pnls
 ReDim unea_list(unea_pnls)
-u = 1
-r = 0
+u = 1							'using dummy variables to declare array number. used to combine variables together for the dialog '
+r = 0							'using dummy variables to declare array number. used to combine variables together for the dialog '
 unea_list(0) = ""
 If unea_pnls <> "0" then
   For i = 1 to unea_pnls
@@ -502,6 +502,7 @@ DO
 				MAXIS_dialog_navigation2
 			LOOP UNTIL ButtonPressed = -1 OR ButtonPressed = previous_button
 			err_msg = ""
+			IF addr_faci_vnds_status = "" THEN err_msg = err_msg & vbCr & "* You must indicate a facility status within the 'Recent(Post Pay)Faci' field."
 			IF actions_taken = "" THEN 		err_msg = err_msg & vbCr & "* Please indicate the actions you have taken."
 			IF err_msg <> "" AND ButtonPressed = -1 THEN MsgBox "*** NOTICE!!! ***" & vbCr & err_msg & vbCr & vbCr & "Please resolve for the script to continue."
 		LOOP UNTIL err_msg = "" OR ButtonPressed = previous_button
